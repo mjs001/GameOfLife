@@ -7,7 +7,7 @@
 import pygame, sys
 from pygame.locals import *
 import random
-
+FPS = 5
 WINDOWW = 900
 WINDOWH = 800
 CELLSIZE = 10
@@ -91,9 +91,9 @@ def getNearbyState(item, lifeD):
                        if lifeD[check] == 1: #there is life if its a 1
                            if x == 0 and y == 0: #ignore
                                nearbyLiving += 0
-                else:                   #only counts 8 surrounding cells doesnt include actual cell of the thing thats doing the check
-                    nearbyLiving += 1
-    return nearbyLiving
+                           else:                   #only counts 8 surrounding cells doesnt include actual cell of the thing thats doing the check
+                               nearbyLiving += 1
+        return nearbyLiving
 
 #determine what happens each tick with each gen
 def tick(lifeD):
@@ -110,11 +110,13 @@ def tick(lifeD):
         elif lifeD[item] == 0: #if dead
             if numberOfNearbyL == 3: #it will resurrect if there are three alive nearby
                 newTick[item] = 1
-
-                
+            else:
+                newTick[item] = 0 #otherwise, if there arent exactly three around it alive it stays dead
+    return newTick
 def main(): 
     pygame.init()
     global DISPLAY
+    FPSCLOCK = pygame.time.Clock()
     DISPLAY = pygame.display.set_mode((WINDOWW, WINDOWH))
     pygame.display.set_caption('Game of Life')
     DISPLAY.fill(DGREEN) #fills bg with green
@@ -128,9 +130,12 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            #runs a tick
+            lifeD = tick(lifeD)
+            for item in lifeD:
+                colorGrid(item, lifeD)
             Grid()
             pygame.display.update()
-        
-        pygame.display.update()
+            FPSCLOCK.tick(FPS)
 if __name__=='__main__':
-            main()
+        main()
