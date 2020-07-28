@@ -170,8 +170,48 @@ def options_buttons():
     fps.pack()
     root.mainloop()
 
-def main():
+def sidebar():
+    global DISPLAY
+    sidebar1 = Rect(0, 750, 900, 50)
+    pygame.draw.rect(DISPLAY, ORANGE, sidebar1)
 
+def text():
+    global FPS
+    global DISPLAY
+    global CELLSIZE
+    font = pygame.font.SysFont(f'fps: {FPS}', 32)
+    fps = font.render(f'fps: {FPS}', True, GREY)
+    DISPLAY.blit(fps, (5, 760))
+    cell = font.render(f'pixel size: {CELLSIZE}', TRUE, GREY)
+    DISPLAY.blit(cell, (80, 760))
+    menu_a = font.render("press 'a' for menu", True, GREY)
+    DISPLAY.blit(menu_a, (240, 760))
+
+
+def press_a():
+    events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                menu.mainloop(DISPLAY)
+
+
+def single_pixel():
+    current = pygame.mouse.get_pos()
+    currentx = current[0]
+    currenty = current[1]
+    square = pygame.draw.rect(DISPLAY, BLUE, (currentx, currenty, CELLSIZE, CELLSIZE))
+
+def mouse25():
+    events = pygame.event.get()
+    for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    print("clicked")
+
+def main():
+    global start
+    global menu
     pygame.init()
     global DISPLAY
     FPSCLOCK = pygame.time.Clock()
@@ -179,8 +219,8 @@ def main():
     pygame.display.set_caption('Game of Life')
     DISPLAY.fill(DGREEN)  # fills bg with green
     def start():
-        while True:  # main part of game
 
+        while True:  # main part of game
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -194,6 +234,11 @@ def main():
             for item in lifeD:
                 colorGrid(item, lifeD)
             Grid()
+            sidebar()
+            text()
+            press_a()
+            single_pixel()
+            mouse25()
             pygame.display.update()
             FPSCLOCK.tick(FPS)
     menu = pygame_menu.Menu(WINDOWH, WINDOWW, "CONWAYS GAME OF LIFE", theme=pygame_menu.themes.THEME_DARK)
@@ -201,6 +246,7 @@ def main():
     menu.add_button('Options', options_buttons)
     menu.add_button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(DISPLAY)
+
 
 if __name__ == '__main__':
     main()
