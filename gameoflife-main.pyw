@@ -185,17 +185,17 @@ def main():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-                # runs a tick
-                lifeD = blank()  # creates library and matches it with blank grid
-                lifeD = randomizedStartGrid(lifeD)
-                for item in lifeD:
-                    colorGrid(item, lifeD)
-                lifeD = tick(lifeD)
-                for item in lifeD:
-                    colorGrid(item, lifeD)
-                Grid()
-                pygame.display.update()
-                FPSCLOCK.tick(FPS)
+            # runs a tick
+            lifeD = blank()  # creates library and matches it with blank grid
+            lifeD = randomizedStartGrid(lifeD)
+            for item in lifeD:
+                colorGrid(item, lifeD)
+            lifeD = tick(lifeD)
+            for item in lifeD:
+                colorGrid(item, lifeD)
+            Grid()
+            pygame.display.update()
+            FPSCLOCK.tick(FPS)
     menu = pygame_menu.Menu(WINDOWH, WINDOWW, "CONWAYS GAME OF LIFE", theme=pygame_menu.themes.THEME_DARK)
     menu.add_button('Start Simulation', start)
     menu.add_button('Options', options_buttons)
