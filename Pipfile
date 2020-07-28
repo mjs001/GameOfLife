@@ -8,6 +8,9 @@ verify_ssl = true
 [packages]
 pygame = "*"
 pygame-menu = "*"
+pygame-gui = "*"
+tkinterx = "*"
+tkintertoy = "*"
 
 [requires]
 python_version = "3.8"

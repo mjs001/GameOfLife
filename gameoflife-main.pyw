@@ -7,6 +7,7 @@ from typing import Dict, Any
 import pygame, sys
 import pygame_menu
 from pygame.locals import *
+from tkinter import *
 import random
 
 pygame.init()
@@ -122,21 +123,64 @@ def tick(lifeD):
                 newTick[item] = 0  # otherwise, if there arent exactly three around it alive it stays dead
     return newTick
 
+#increase pixel grid
 
+def click_inc():
+    global CELLSIZE
+    CELLSIZE += 1
+    cell.config(text=f'cellsize: {CELLSIZE}')
 
+def click_dec():
+    global CELLSIZE
+    if CELLSIZE <= 10:
+        CELLSIZE == 10
+    else:
+        CELLSIZE -= 1
+    cell.config(text=f'cellsize: {CELLSIZE}')
 
+def click_inc_fps():
+    global FPS
+    FPS += 1
+    fps.config(text=f'FPS: {FPS}')
+def click_dec_fps():
+    global FPS
+    if FPS <= 1:
+        FPS == 1
+    else:
+        FPS -= 1
+    fps.config(text=f'FPS: {FPS}')
+
+def options_buttons():
+    root = Tk()
+    global increase_pixels
+    global decrease_pixels
+    global cell
+    global fps
+    increase_pixels = Button(root, text="increase pixel size", command=click_inc)
+    decrease_pixels = Button(root, text="decrease pixel size", command=click_dec)
+    cell = Button(root, text=f'cellsize: {CELLSIZE}', state="disabled")
+    increase_fps = Button(root, text="increase FPS", command=click_inc_fps)
+    decrease_fps = Button(root, text="decrease FPS", command=click_dec_fps)
+    fps = Button(root, text=f'FPS: {FPS}', state="disabled")
+    increase_pixels.pack()
+    decrease_pixels.pack()
+    cell.pack()
+    increase_fps.pack()
+    decrease_fps.pack()
+    fps.pack()
+    root.mainloop()
 
 def main():
+
     pygame.init()
     global DISPLAY
-
     FPSCLOCK = pygame.time.Clock()
     DISPLAY = pygame.display.set_mode((WINDOWW, WINDOWH))
     pygame.display.set_caption('Game of Life')
-
     DISPLAY.fill(DGREEN)  # fills bg with green
     def start():
         while True:  # main part of game
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -154,6 +198,7 @@ def main():
                 FPSCLOCK.tick(FPS)
     menu = pygame_menu.Menu(WINDOWH, WINDOWW, "CONWAYS GAME OF LIFE", theme=pygame_menu.themes.THEME_DARK)
     menu.add_button('Start Simulation', start)
+    menu.add_button('Options', options_buttons)
     menu.add_button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(DISPLAY)
 
