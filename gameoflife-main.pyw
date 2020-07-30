@@ -213,58 +213,130 @@ def single_pixel():
     current = pygame.mouse.get_pos()
     currentx = current[0]
     currenty = current[1]
-    square = pygame.draw.rect(DISPLAY, BLUE, (currentx, currenty, CELLSIZE, CELLSIZE))
-    # print(currentx, currenty)
+    square = pygame.draw.rect(DISPLAY, BLUE, (currentx // CELLSIZE * 10, currenty // CELLSIZE * 10, CELLSIZE, CELLSIZE))
     # START HERE TOMORROW
 
-
+#
 def l_click():
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                print("clicked")
+            quit()
+        if 0 <= currentx <= WINDOWW and 0 <= currenty <= WINDOWH:
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 2:
+        square
+
 
 
 def play_btn():
     global FPS
     global lifeD
     font = pygame.font.SysFont("PLAY", 32)
-    play = pygame.draw.rect(DISPLAY, RED, (450, 760, 60, 30))
+    play = pygame.draw.rect(DISPLAY, RED, (530, 760, 80, 30))
+
     play_f = font.render("PLAY", True, WHITE)
-    DISPLAY.blit(play_f, (450, 760))
+    a = DISPLAY.blit(play_f, (530, 760))
+
+
+    # event = pygame.event.poll()
+    # if 453 <= currentx <= 509 and 761 <= currenty <= 787:
+    # for event in pygame.event.get():
+    #     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+    #     FPS = 2
+    # while True:
+    #     for event in pygame.event.get():
+    #         if pygame_menu.events.EXIT:
+    #             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+    #                 pos = pygame.mouse.get_pos()
+    #                 if a.collidepoint(pos):
+    #                     FPS = 2
+
+
+def pause_btn():
+    font = pygame.font.SysFont(f'fps: {FPS}', 24)
+    pause = pygame.draw.rect(DISPLAY, RED, (450, 760, 60, 30))
+    pause_f = font.render("PAUSE", True, WHITE)
+    DISPLAY.blit(pause_f, (450, 760))
+
+
+def gens():
+    font = pygame.font.SysFont(f'fps: {FPS}', 24)
+    gens_f = font.render(f'gens: {pygame.time.get_ticks() // 1000}', True, GREY)
+    DISPLAY.blit(gens_f, (750, 760))
+
+def play():
+    global current
+    global currentx
+    global currenty
     current = pygame.mouse.get_pos()
     currentx = current[0]
     currenty = current[1]
-    for event in pygame.event.get():
-        if 453 <= currentx <= 509 and 761 <= currenty <= 787:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                FPS = 2
-                print("its doing the thing")
-def pause_btn():
-    font = pygame.font.SysFont(f'fps: {FPS}', 32)
-    pause = pygame.draw.rect(DISPLAY, RED, (530, 760, 80, 30))
-    pause_f = font.render("PAUSE", True, WHITE)
-    DISPLAY.blit(pause_f, (530, 760))
+    paused = True
+    while not paused:
+        global FPS
+        global FPSCLOCK
+        for event in pygame.event.get():
 
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if 531 <= currentx <= 715 and 723 <= currenty <= 788:
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+
+                    paused = True
+
+
+def pause():
+    global current
+    global currentx
+    global currenty
+    global FPSCLOCK
+    current = pygame.mouse.get_pos()
+    currentx = current[0]
+    currenty = current[1]
+    paused = True
+    while paused:
+        global FPS
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if 453 <= currentx <= 509 and 761 <= currenty <= 787:
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                    paused = False
 
 def main():
     global start
     global menu
-
+    global currentx
+    global currenty
     global DISPLAY
     pygame.init()
+    global FPSCLOCK
     FPSCLOCK = pygame.time.Clock()
     DISPLAY = pygame.display.set_mode((WINDOWW, WINDOWH))
     pygame.display.set_caption('Game of Life')
     DISPLAY.fill(DGREEN)  # fills bg with green
+    current = pygame.mouse.get_pos()
+    currentx = current[0]
+    currenty = current[1]
 
     def start():
         global FPS
         global lifeD
-        while True:  # main part of game
+        global currentx
+        global currenty
+        global FPSCLOCK
+
+        while True:
+            global menu
+            global lifeD
+            # main part of game
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -273,17 +345,28 @@ def main():
             # runs a tick
             # creates library and matches it with blank
 
-            FPS = 0
-            for event in pygame.event.get():
-                if pygame_menu.events.EXIT:
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button == 1:
-                            l_click()
-            if FPS >= 2:
-                lifeD = randomizedStartGrid(lifeD)
-            else:
-                lifeD = blank()
+            # for event in pygame.event.get():
+            #     if pygame_menu.events.EXIT:
+            #         if event.type == pygame.MOUSEBUTTONDOWN:
+            #             if event.button == 1:
+            #                 l_click()
+            # event = pygame.event.poll()
+            lifeD = blank()
+            # if FPS >= 2:
+            #     lifeD = randomizedStartGrid(lifeD)
+            # else:
+            #     lifeD = blank()
 
+            # def mouse_check():
+            #     global FPS
+            #
+            #     if FPS == 0:
+            #         if 453 <= currentx <= 509 and 761 <= currenty <= 787:
+            #             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            #                 FPS = 2
+            #                 count = 1
+            #             elif event.type == pygame.MOUSEBUTTONUP and event.button == 2:
+            #                 FPS = 0
             for item in lifeD:
                 colorGrid(item, lifeD)
             lifeD = tick(lifeD)
@@ -294,16 +377,27 @@ def main():
             sidebar()
             text()
             press_a()
+            gens()
             play_btn()
             pause_btn()
-            single_pixel()
+            if pygame_menu.events.EXIT:
+                if 453 <= currentx <= 509 and 761 <= currenty <= 787:
+                    if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                        pause()
+                if 453 <= currentx <= 509 and 761 <= currenty <= 787:
+                    if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                        play()
 
+
+
+            # mouse_check()
+            single_pixel()
             pygame.display.update()
             FPSCLOCK.tick(FPS)
 
+
     menu = pygame_menu.Menu(WINDOWH, WINDOWW, "CONWAYS GAME OF LIFE", theme=pygame_menu.themes.THEME_DARK)
     menu.add_button('Start Simulation', start)
-
     menu.add_button('Options', options_buttons)
     menu.add_button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(DISPLAY)
